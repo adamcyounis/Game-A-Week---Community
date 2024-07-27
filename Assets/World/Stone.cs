@@ -15,9 +15,6 @@ public class Stone : Tile {
     public override void Tock() {
 
     }
-    public override void Work() {
-
-    }
     public override Color GetColor() {
         //grey   
         return Color.gray;

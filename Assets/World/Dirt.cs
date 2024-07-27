@@ -13,12 +13,12 @@ public class Dirt : Tile {
     */
     int surroundingDirt = 0;
     float dirtHealth = 0;
-    int waters = 0;
 
     Tile neighbour;
 
     int immunity;
 
+    public bool foundation = false;
     public Dirt(Vector2Int pos) {
         this.pos = pos;
         health = Random.Range(maxHealth * 0.25f, maxHealth * 0.75f);
@@ -30,7 +30,12 @@ public class Dirt : Tile {
         if (immunity <= 0) {
             nextHealth -= Random.Range(0.6f, 2f);
         }
-        UpdateHealthByEnvirons();
+
+        if (foundation) {
+            nextHealth = 0;
+        } else {
+            UpdateHealthByEnvirons();
+        }
 
         nextHealth = Mathf.Clamp(nextHealth, 0, maxHealth);
         immunity = Mathf.Clamp(immunity - 1, 0, 100);
@@ -46,14 +51,16 @@ public class Dirt : Tile {
     void UpdateHealthByEnvirons() {
         dirtHealth = 0;
         surroundingDirt = 0;
-        waters = 0;
 
         for (int i = 0; i < neighbours.Count; i++) {
             neighbour = neighbours[i];
 
             if (neighbour is Water) {
                 nextHealth += MapGen.instance.waterNutrientTransfer;
-                waters++;
+
+            } else if (neighbour is Wood) {
+                nextHealth += MapGen.instance.waterNutrientTransfer;
+
             } else {
                 if (neighbour is Dirt d) {
                     surroundingDirt++;
@@ -70,9 +77,6 @@ public class Dirt : Tile {
 
     }
 
-    public override void Work() {
-
-    }
 
     public void Plant() {
         health = maxHealth;
@@ -81,7 +85,7 @@ public class Dirt : Tile {
     }
 
     public bool IsUnseeded() {
-        return immunity <= 0 && health <= maxHealth * 0.1f;
+        return immunity <= 0 && health <= maxHealth * 0.1f && !foundation;
     }
 
 
@@ -99,4 +103,5 @@ public class Dirt : Tile {
     float Map(float value, float start1, float stop1, float start2, float stop2) {
         return (value - start1) / (stop1 - start1) * (stop2 - start2) + start2;
     }
+
 }

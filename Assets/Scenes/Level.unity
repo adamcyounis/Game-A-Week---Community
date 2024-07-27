@@ -291,6 +291,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   farmerPrefab: {fileID: 1317403836827435922, guid: b149049adec45a348863bfdbd361e8c6,
     type: 3}
+  builderPrefab: {fileID: 8538361547852775383, guid: 89bfe3053f9d2c444a5dd5b69253d3df,
+    type: 3}
 --- !u!4 &1506083286
 Transform:
   m_ObjectHideFlags: 0
@@ -316,6 +318,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
         type: 3}
+      propertyPath: reRoll
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
+      propertyPath: seed.x
+      value: 6555
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
+      propertyPath: seed.y
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
       propertyPath: size.x
       value: 128
       objectReference: {fileID: 0}
@@ -326,7 +343,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
         type: 3}
+      propertyPath: tickRate
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
+      propertyPath: houses.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
       propertyPath: agents.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1647301325607107618, guid: 2afa9accf54d4cb4fab6705c91fb4516,
+        type: 3}
+      propertyPath: houses.Array.data[0]
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4984065238371524180, guid: 2afa9accf54d4cb4fab6705c91fb4516,

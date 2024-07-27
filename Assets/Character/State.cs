@@ -13,7 +13,7 @@ public abstract class State : MonoBehaviour {
 
     public StateMachine machine;
 
-    public Farmer agent => machine.agent;
+    public Agent agent => machine.agent;
     public State state => machine.state;
 
     public abstract void Enter();

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class StateMachine {
 
-    public Farmer agent;
+    public Agent agent;
     public State state;
-    public StateMachine(Farmer agent) {
+    public StateMachine(Agent agent) {
         this.agent = agent;
     }
 
@@ -36,5 +36,13 @@ public class StateMachine {
 
             state.Enter();
         }
+    }
+
+    public string GetStateBranchName(string branchName) {
+        branchName += ", " + state.GetType().ToString();
+        if (state.state != null) {
+            branchName = state.state.machine.GetStateBranchName(branchName);
+        }
+        return branchName;
     }
 }

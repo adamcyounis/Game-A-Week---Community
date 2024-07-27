@@ -14,10 +14,6 @@ public class Water : Tile {
 
     }
 
-    public override void Work() {
-
-    }
-
     public override Color GetColor() {
         return (Color.cyan + Color.blue) / 2f;
     }

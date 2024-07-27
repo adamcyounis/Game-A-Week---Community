@@ -53,7 +53,7 @@ MonoBehaviour:
   noiseScale: 1.79
   noiseScale2: 9.23
   renderScale: 0.16
-  nutrientTransfer: 2.5
+  nutrientTransfer: 2.49
   waterNutrientTransfer: 2.95
   agents: []
   tickRate: 10

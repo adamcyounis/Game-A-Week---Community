@@ -9,7 +9,7 @@ public class MapGen : MonoBehaviour {
     public int bake = 300;
     public bool tick;
     public int tickStep = 10;
-    public Tile[][] tiles;
+    public Tile[,] tiles;
 
     public Vector2Int size;
     public Vector2Int seed;
@@ -22,9 +22,9 @@ public class MapGen : MonoBehaviour {
 
     public float nutrientTransfer = 1;
     public float waterNutrientTransfer = 1.3f;
-
-    public List<Farmer> agents = new List<Farmer>();
-
+    public float treeDensity = 30;
+    public List<Agent> agents = new List<Agent>();
+    public List<House> houses;
     public float tickRate;
     float tickDelta;
 
@@ -33,41 +33,49 @@ public class MapGen : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         Application.targetFrameRate = 60;
-
         Generate();
     }
 
     void Generate() {
         tickTime = 0;
-        tiles = new Tile[size.x][];
+        tiles = new Tile[size.x, size.y];
         for (int i = 0; i < size.x; i++) {
-            tiles[i] = new Tile[size.y];
             for (int j = 0; j < size.y; j++) {
-                tiles[i][j] = Generate(new Vector2Int(i, j));
+                tiles[i, j] = Generate(new Vector2Int(i, j));
             }
         }
 
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
-
-                //set tile neighbours
-                List<Tile> neighbours = new List<Tile>();
-                for (int x = -1; x <= 1; x++) {
-                    for (int y = -1; y <= 1; y++) {
-                        if (x == 0 && y == 0) {
-                            continue;
-                        }
-                        Tile neighbour = GetTile(i + x, j + y);
-                        if (neighbour != null) {
-                            neighbours.Add(neighbour);
-                        }
-                    }
-                }
-                tiles[i][j].SetNeighbours(neighbours);
+                AssignNeighbours(i, j);
             }
         }
 
         Tick(bake);
+
+        foreach (House h in houses) {
+            if (h.prebuild) {
+                h.PreBuild();
+            }
+        }
+    }
+
+
+    public void AssignNeighbours(int i, int j) {
+        //set tile neighbours
+        List<Tile> neighbours = new List<Tile>();
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                if (x == 0 && y == 0) {
+                    continue;
+                }
+                Tile neighbour = GetTile(i + x, j + y);
+                if (neighbour != null) {
+                    neighbours.Add(neighbour);
+                }
+            }
+        }
+        tiles[i, j].SetNeighbours(neighbours);
     }
 
     void Tick(int amount) {
@@ -75,13 +83,13 @@ public class MapGen : MonoBehaviour {
         for (int x = 0; x < amount; x++) {
             for (int i = 0; i < size.x; i++) {
                 for (int j = 0; j < size.y; j++) {
-                    tiles[i][j].Tick();
+                    tiles[i, j].Tick();
                 }
             }
 
             for (int i = 0; i < size.x; i++) {
                 for (int j = 0; j < size.y; j++) {
-                    tiles[i][j].Tock();
+                    tiles[i, j].Tock();
                 }
             }
         }
@@ -150,7 +158,13 @@ public class MapGen : MonoBehaviour {
 
         if (noise < 0.33f) {
             return new Water(pos);
+        } else if (noise < 0.5f) {
+            return new Dirt(pos);
         } else if (noise < 0.66f) {
+            //randomly place trees every 1/30 tiles
+            if (Random.value < 1 / treeDensity) {
+                return new Wood(pos);
+            }
             return new Dirt(pos);
         } else {
             return new Stone(pos);
@@ -161,18 +175,44 @@ public class MapGen : MonoBehaviour {
         if (pos.x < 0 || pos.x >= size.x || pos.y < 0 || pos.y >= size.y) {
             return null;
         }
-        return tiles[pos.x][pos.y];
+        return tiles[pos.x, pos.y];
     }
 
     public Tile GetTile(int x, int y) {
         if (x < 0 || x >= size.x || y < 0 || y >= size.y) {
             return null;
         }
-        return tiles[x][y];
+        return tiles[x, y];
+    }
+
+    public Tile ReplaceTile(Vector2Int pos, Tile tile) {
+
+        tiles[pos.x, pos.y] = tile;
+        tile.pos = pos;
+
+        //fix neighbours
+        AssignNeighbours(pos.x, pos.y);
+        foreach (Tile t in tile.neighbours) {
+            AssignNeighbours(t.pos.x, t.pos.y);
+        }
+
+        return tile;
     }
 
     void OnDrawGizmos() {
         DrawWorld();
+
+        DrawHouses();
+    }
+
+    void DrawHouses() {
+        if (houses == null) {
+            return;
+        }
+
+        foreach (House h in houses) {
+            h.Draw();
+        }
     }
 
     void DrawWorld() {
@@ -182,17 +222,17 @@ public class MapGen : MonoBehaviour {
 
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
-                Gizmos.color = tiles[i][j].GetColor();
+                Gizmos.color = tiles[i, j].GetColor();
                 Gizmos.DrawCube(new Vector3(i, j, 0) * renderScale, Vector3.one * renderScale);
             }
         }
     }
 
 
-    public Vector3 PosToWorld(Vector2Int pos) {
+    public Vector3 MapToWorld(Vector2Int pos) {
         return new Vector3(pos.x, pos.y, 0) * renderScale;
     }
-    public Vector2Int WorldToPos(Vector3 world) {
+    public Vector2Int WorldToMap(Vector3 world) {
         return new Vector2Int((int)(world.x / renderScale), (int)(world.y / renderScale));
     }
 

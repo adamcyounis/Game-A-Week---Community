@@ -68,6 +68,7 @@ public class PlantSeeds : State {
     }
 
     public void Plant() {
-        dirt.Plant();
+        MapGen.instance.ReplaceTile(dirt.pos, new Wood(dirt.pos));
+        //dirt.Plant();
     }
 }
