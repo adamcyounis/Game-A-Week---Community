@@ -30,7 +30,7 @@ public class StateMachine {
                 state.machine = new StateMachine(agent);
             }
             state.machine.agent = agent;
-            state.startTime = Time.time;
+            state.startTime = MapGen.instance.tickTime;
             state.initPos = agent.pos;
             state.complete = false;
 

@@ -12,6 +12,7 @@ public class Farmer : Human {
     // Start is called before the first frame update
     public void Awake() {
         machine = new StateMachine(this);
+        idle.waitTime = 1;
         machine.Set(idle, true);
         ready = true;
     }
@@ -32,14 +33,16 @@ public class Farmer : Human {
                     //navigate to random position
                     Navigate();
                 } else {
+                    idle.waitTime = 25;
                     machine.Set(idle, true);
                 }
             }
         }
-
+        /*
         if (lifespan <= 0) {
             Die();
         }
+        */
 
     }
 

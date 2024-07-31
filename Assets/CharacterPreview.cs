@@ -31,7 +31,7 @@ public class CharacterPreview : MonoBehaviour {
         RectTransform rt = GetComponent<RectTransform>();
 
         //if the mouse was clicked inside of the preview, randomize the sprites
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonUp(0)) {
             Vector2 mousePos = Input.mousePosition;
             if (rt.rect.Contains(rt.InverseTransformPoint(mousePos))) {
                 job = (Job)Random.Range(0, 2);

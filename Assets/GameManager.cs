@@ -113,9 +113,9 @@ public class GameManager : MonoBehaviour {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
                 //if builder
-                if (dragPreview.job == CharacterPreview.Job.Builder) {
+                if (characterGen.preview.job == CharacterPreview.Job.Builder) {
                     PlaceBuilder();
-                } else if (dragPreview.job == CharacterPreview.Job.Farmer) {
+                } else if (characterGen.preview.job == CharacterPreview.Job.Farmer) {
                     PlaceFarmer();
                 }
             }

@@ -489,4 +489,4 @@ MonoBehaviour:
   complete: 0
   startTime: 0
   initPos: {x: 0, y: 0}
-  waitTime: 1
+  waitTime: 20
