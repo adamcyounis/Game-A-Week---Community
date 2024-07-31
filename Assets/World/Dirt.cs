@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class Dirt : Tile {
-    float health;
-    float nextHealth;
+    public float health;
+    public float nextHealth;
 
     static int maxHealth = 10;
     /*states
@@ -27,14 +27,14 @@ public class Dirt : Tile {
 
     public override void Tick() {
 
-        if (immunity <= 0) {
-            nextHealth -= Random.Range(0.6f, 2f);
-        }
-
         if (foundation) {
-            nextHealth--;
+            nextHealth = 0;
         } else {
             UpdateHealthByEnvirons();
+        }
+
+        if (immunity <= 0) {
+            nextHealth -= Random.Range(0.6f, 2f);
         }
 
         nextHealth = Mathf.Clamp(nextHealth, 0, maxHealth);
@@ -45,7 +45,7 @@ public class Dirt : Tile {
     }
 
     public override void Tock() {
-        health = nextHealth;
+        health = Mathf.Clamp(nextHealth, 0, maxHealth);
     }
 
     void UpdateHealthByEnvirons() {
@@ -107,6 +107,10 @@ public class Dirt : Tile {
 
     float Map(float value, float start1, float stop1, float start2, float stop2) {
         return (value - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+    }
+
+    public override int GetSpriteIndex() {
+        return Mathf.RoundToInt(Map(health, 0, maxHealth, 0, 7)) + dirtSpriteOffset;
     }
 
 }

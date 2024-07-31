@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Farmer : Agent {
+public class Farmer : Human {
 
     public Navigate navigate;
     public Idle idle;
@@ -38,8 +38,7 @@ public class Farmer : Agent {
         }
 
         if (lifespan <= 0) {
-            MapGen.instance.agents.Remove(this);
-            Destroy(gameObject);
+            Die();
         }
 
     }
@@ -52,8 +51,10 @@ public class Farmer : Agent {
     }
 
     void OnDrawGizmos() {
+        /*
         Gizmos.color = Color.white;
         Gizmos.DrawCube(MapGen.instance.MapToWorld(pos), Vector3.one * 0.1f);
+        */
     }
 
 }

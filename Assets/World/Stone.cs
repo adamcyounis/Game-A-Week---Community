@@ -3,9 +3,11 @@ using UnityEngine;
 public class Stone : Tile {
     int minerals;
 
+
     public Stone(Vector2Int pos) {
         this.pos = pos;
         minerals = Random.Range(1, 10);
+        spriteIndex = Random.Range(0, MapGen.instance.stoneSprites.Length);
     }
 
 
@@ -18,6 +20,10 @@ public class Stone : Tile {
     public override Color GetColor() {
         //grey   
         return Color.gray;
+    }
+
+    public override int GetSpriteIndex() {
+        return spriteIndex + stoneSpriteOffset;
     }
 
 }

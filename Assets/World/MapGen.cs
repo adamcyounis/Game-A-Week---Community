@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class MapGen : MonoBehaviour {
 
     [Header("Sprite Files")]
+    public Sprite[] dirtSprites;
+    public Sprite[] waterSprites;
+    public Sprite[] woodSprites;
+    public Sprite[] stoneSprites;
+    public Sprite[] foundationSprites;
 
-
+    Sprite[] allTerrainSprites;
 
     [Header("Map Generation")]
     public static MapGen instance;
@@ -36,7 +42,9 @@ public class MapGen : MonoBehaviour {
     [Header("Playback Speed")]
     public float tickRate;
     float tickDelta;
-    public float tickTime;
+
+    [Header("Simulation Runtime")]
+    public int tickTime;
 
 
     [Header("Instances")]
@@ -45,20 +53,37 @@ public class MapGen : MonoBehaviour {
 
     public RawImage worldRenderer;
     public Texture2D worldTexture;
-
     Color[,] terrainColours;
-
     int ppu = 100;
     int tileScale;
 
     // Start is called before the first frame update
     void Start() {
         Application.targetFrameRate = 60;
-
         Generate();
     }
 
     void SetupGraphics() {
+
+        allTerrainSprites = new Sprite[dirtSprites.Length + waterSprites.Length + woodSprites.Length + stoneSprites.Length + foundationSprites.Length];
+        int d = dirtSprites.Length;
+        int w = waterSprites.Length;
+        int wo = woodSprites.Length;
+        int s = stoneSprites.Length;
+        int f = foundationSprites.Length;
+        dirtSprites.CopyTo(allTerrainSprites, 0);
+        waterSprites.CopyTo(allTerrainSprites, d);
+        woodSprites.CopyTo(allTerrainSprites, d + w);
+        stoneSprites.CopyTo(allTerrainSprites, d + w + wo);
+        foundationSprites.CopyTo(allTerrainSprites, d + w + wo + s);
+
+        Tile.dirtSpriteOffset = 0;
+        Tile.waterSpriteOffset = d;
+        Tile.woodSpriteOffset = d + w;
+        Tile.stoneSpriteOffset = d + w + wo;
+        Tile.foundationSpriteOffset = d + w + wo + s;
+
+
         tileScale = Mathf.RoundToInt(renderScale * ppu);
         terrainColours = new Color[size.x, size.y];
         worldTexture = new Texture2D(size.x * tileScale, size.y * tileScale);
@@ -139,22 +164,29 @@ public class MapGen : MonoBehaviour {
 
 
 
-        UpdateGraphics();
+
     }
     public void UpdateGraphics() {
         Color c;
-
+        Texture2D temp = new Texture2D(tileScale, tileScale);
         for (int i = 0; i < size.x; i++) {
             for (int j = 0; j < size.y; j++) {
                 if (tiles[i, j] != null) {
                     c = tiles[i, j].GetColor();
                     if (c != terrainColours[i, j]) {
-                        for (int x = 0; x < tileScale; x++) {
-                            for (int y = 0; y < tileScale; y++) {
-                                worldTexture.SetPixel(i * tileScale + x, j * tileScale + y, c);
-                            }
+
+                        try {
+                            worldTexture.SetPixels(
+                                i * tileScale,
+                                j * tileScale,
+                                temp.width,
+                                temp.height,
+                                allTerrainSprites[tiles[i, j].GetSpriteIndex()].texture.GetPixels());
+                            terrainColours[i, j] = c;
+                        } catch (System.Exception e) {
+                            Debug.Log(e + " | " + tiles[i, j] + " " + tiles[i, j].GetSpriteIndex() + " " + allTerrainSprites.Length);
                         }
-                        terrainColours[i, j] = c;
+
                     }
                 }
             }
@@ -201,6 +233,7 @@ public class MapGen : MonoBehaviour {
             tickDelta -= 1f / tickRate;
             Tick(1);
         }
+        UpdateGraphics();
     }
 
     Tile Generate(Vector2Int pos) {
@@ -250,7 +283,7 @@ public class MapGen : MonoBehaviour {
     }
 
     public Tile ReplaceTile(Vector2Int pos, Tile tile) {
-
+        Debug.Log("Replacing tile at " + pos);
         tiles[pos.x, pos.y] = tile;
         tile.pos = pos;
 
@@ -264,8 +297,10 @@ public class MapGen : MonoBehaviour {
     }
 
     void OnDrawGizmos() {
-        //DrawWorld();
-        //DrawHouses();
+        if (!Application.isPlaying) {
+            //DrawWorld();
+            //DrawHouses();
+        }
     }
 
     void DrawHouses() {
@@ -333,6 +368,10 @@ public class MapGen : MonoBehaviour {
 
         return tiles;
 
+    }
+
+    public Bounds WorldBounds() {
+        return new Bounds(Vector3.zero, new Vector3(size.x, size.y, 0) * renderScale);
     }
 
 }

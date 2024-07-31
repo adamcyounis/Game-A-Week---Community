@@ -9,6 +9,8 @@ public class BuildHouse : State {
     public Navigate navigate;
     public House house;
     public bool first;
+
+    public Human human => agent as Human;
     public override void Enter() {
         //Debug.Log("Building house..");
         //pick destination for house
@@ -52,15 +54,15 @@ public class BuildHouse : State {
 
     }
     bool CarryingNextResource() {
-        return agent.carryingTile != null && agent.carryingTile.GetType() == house.GetNextRequirement();
+        return human.carryingTile != null && human.carryingTile.GetType() == house.GetNextRequirement();
     }
     void DropOffResources() {
         //if the agent is at the house
         if (agent.pos == house.nextRequirementPos) {
             //drop the resource
-            MapGen.instance.ReplaceTile(agent.pos, agent.carryingTile);
-            agent.carryingTile.collectable = false;
-            agent.carryingTile = null;
+            MapGen.instance.ReplaceTile(agent.pos, human.carryingTile);
+            human.carryingTile.collectable = false;
+            human.carryingTile = null;
             //Debug.Log("dropping where I'm standing");
 
         } else {

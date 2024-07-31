@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 8.96, y: 5.12}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &5389404793842750571
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ Transform:
   m_GameObject: {fileID: 4984065238371524180}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6799753, y: 1.4207302, z: 0.049817644}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -141,6 +141,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 706e722c388acc5469996c85de1f8056, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dirtSprites:
+  - {fileID: 21300000, guid: 35f142987d5cd3b4dbba28c25a3eded2, type: 3}
+  - {fileID: 21300000, guid: 219dfcec751dab14fac3daf852e9660d, type: 3}
+  - {fileID: 21300000, guid: 8fcf37eebd2bc364bbbd854122c30585, type: 3}
+  - {fileID: 21300000, guid: b19f2b57d38b96347bc03c1e73997043, type: 3}
+  - {fileID: 21300000, guid: 8719c4817801af1458d4eb25e0ab2e7d, type: 3}
+  - {fileID: 21300000, guid: 16f1d1cecb841cc43819a2bae3fd054b, type: 3}
+  - {fileID: 21300000, guid: cfaea51ff9500e74ebd5d9160f6c2818, type: 3}
+  - {fileID: 21300000, guid: a81a395cd072df2449d1b6ddcd5cee88, type: 3}
+  waterSprites:
+  - {fileID: 21300000, guid: 7a3c00a152b258643bd1c745ac5b34b8, type: 3}
+  - {fileID: 21300000, guid: d3c81548ded649848a24afa7c548430f, type: 3}
+  woodSprites:
+  - {fileID: 21300000, guid: ff4192c41c10f4646844fce16af43820, type: 3}
+  - {fileID: 21300000, guid: 226ebe03323622040b96214509d2fa53, type: 3}
+  - {fileID: 21300000, guid: 53f79c397a191e24a895071930822d7a, type: 3}
+  stoneSprites:
+  - {fileID: 21300000, guid: 93f7ae8a2eaaa5049b529aab0c18ed13, type: 3}
+  - {fileID: 21300000, guid: b22b376ba8ff03642a45b92a0188f3c9, type: 3}
+  foundationSprites:
+  - {fileID: 21300000, guid: 35f142987d5cd3b4dbba28c25a3eded2, type: 3}
   reRoll: 0
   bake: 100
   tick: 0

@@ -61,6 +61,8 @@ public class House : MonoBehaviour {
                 Vector2Int p = pos + new Vector2Int(x, y);
                 Dirt tile = new Dirt(p);
                 tile.foundation = true;
+                tile.health = 0;
+                tile.nextHealth = 0;
                 MapGen.instance.ReplaceTile(p, tile);
             }
         }

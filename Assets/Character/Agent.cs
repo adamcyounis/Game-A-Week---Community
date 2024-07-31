@@ -6,11 +6,10 @@ public class Agent : MonoBehaviour {
     public bool ready = false;
     public Vector2Int pos;
     protected State state => machine.state;
-
+    public int birthTick;
+    public int age => (int)(((MapGen.instance.tickTime) - birthTick) / 36);
     public StateMachine machine;
     public virtual void Tick() { }
-    public Tile carryingTile;
-
 
 
     public Tile FindTileOfType(Type type, int visionRange) {
@@ -26,5 +25,9 @@ public class Agent : MonoBehaviour {
         }
         return null;
 
+    }
+
+    public void Update() {
+        transform.position = MapGen.instance.MapToWorld(pos);
     }
 }

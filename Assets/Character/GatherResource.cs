@@ -5,6 +5,8 @@ using System;
 public class GatherResource<U> : State {
     public Navigate navigate;
     public Tile target;
+
+    Human human => agent as Human;
     public override void Enter() {
         machine.state = null;
         //find the closest resource
@@ -27,17 +29,17 @@ public class GatherResource<U> : State {
 
         if (target != null && state.complete) {
             if (state == navigate) {
-                if (agent.pos == navigate.target) {
+                if (human.pos == navigate.target) {
                     //if it's stone or wood, replace with dirt
                     if (target is Stone || target is Wood) {
 
-                        Tile replacementTile = agent.carryingTile;
+                        Tile replacementTile = human.carryingTile;
 
                         if (replacementTile == null) {
                             replacementTile = new Dirt(target.pos);
                         }
 
-                        agent.carryingTile = target;
+                        human.carryingTile = target;
                         MapGen.instance.ReplaceTile(target.pos, replacementTile);
                         complete = true;
                     }

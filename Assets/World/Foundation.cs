@@ -13,4 +13,8 @@ public class Foundation : Tile {
 
     public override void Tock() {
     }
+
+    public override int GetSpriteIndex() {
+        return 0 + foundationSpriteOffset;
+    }
 }
