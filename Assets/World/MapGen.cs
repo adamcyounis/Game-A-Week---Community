@@ -1,42 +1,76 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class MapGen : MonoBehaviour {
 
+    [Header("Sprite Files")]
+
+
+
+    [Header("Map Generation")]
     public static MapGen instance;
     public bool reRoll;
     public int bake = 300;
+    [Header("Force Step")]
     public bool tick;
     public int tickStep = 10;
     public Tile[,] tiles;
+    [Header("Map Size")]
 
     public Vector2Int size;
     public Vector2Int seed;
 
+    [Header("Terrain Shape")]
     public float noiseScale;
     public float noiseScale2;
 
     public float renderScale = 0.16f;
 
+    [Header("Simulation Variables")]
 
     public float nutrientTransfer = 1;
     public float waterNutrientTransfer = 1.3f;
     public float treeDensity = 30;
-    public List<Agent> agents = new List<Agent>();
-    public List<House> houses;
+
+    [Header("Playback Speed")]
     public float tickRate;
     float tickDelta;
-
-
     public float tickTime;
+
+
+    [Header("Instances")]
+    public List<Agent> agents = new List<Agent>();
+    public List<House> houses;
+
+    public RawImage worldRenderer;
+    public Texture2D worldTexture;
+
+    Color[,] terrainColours;
+
+    int ppu = 100;
+    int tileScale;
+
     // Start is called before the first frame update
     void Start() {
         Application.targetFrameRate = 60;
+
         Generate();
     }
 
+    void SetupGraphics() {
+        tileScale = Mathf.RoundToInt(renderScale * ppu);
+        terrainColours = new Color[size.x, size.y];
+        worldTexture = new Texture2D(size.x * tileScale, size.y * tileScale);
+        worldTexture.filterMode = FilterMode.Point;
+        worldRenderer.texture = worldTexture;
+        worldRenderer.rectTransform.sizeDelta = new Vector2(size.x * renderScale, size.y * renderScale);
+    }
+
     void Generate() {
+        //update world texture
+        SetupGraphics();
+
         tickTime = 0;
         tiles = new Tile[size.x, size.y];
         for (int i = 0; i < size.x; i++) {
@@ -96,6 +130,36 @@ public class MapGen : MonoBehaviour {
 
         TickAgents();
         tickTime += amount;
+
+
+        //update world texture
+        if (worldTexture == null) {
+            SetupGraphics();
+        }
+
+
+
+        UpdateGraphics();
+    }
+    public void UpdateGraphics() {
+        Color c;
+
+        for (int i = 0; i < size.x; i++) {
+            for (int j = 0; j < size.y; j++) {
+                if (tiles[i, j] != null) {
+                    c = tiles[i, j].GetColor();
+                    if (c != terrainColours[i, j]) {
+                        for (int x = 0; x < tileScale; x++) {
+                            for (int y = 0; y < tileScale; y++) {
+                                worldTexture.SetPixel(i * tileScale + x, j * tileScale + y, c);
+                            }
+                        }
+                        terrainColours[i, j] = c;
+                    }
+                }
+            }
+        }
+        worldTexture.Apply();
 
     }
 
@@ -200,9 +264,8 @@ public class MapGen : MonoBehaviour {
     }
 
     void OnDrawGizmos() {
-        DrawWorld();
-
-        DrawHouses();
+        //DrawWorld();
+        //DrawHouses();
     }
 
     void DrawHouses() {

@@ -8,7 +8,7 @@ public class BuildHouse : State {
     public GatherResource<Stone> gatherStone;
     public Navigate navigate;
     public House house;
-
+    public bool first;
     public override void Enter() {
         //Debug.Log("Building house..");
         //pick destination for house
@@ -92,7 +92,7 @@ public class BuildHouse : State {
         //check the map for the list of all houses
         List<House> houses = MapGen.instance.houses.ToList();
 
-        if (houses.Count == 0) {
+        if (houses.Count == 0 || first) {
             return agent.pos;
         }
 

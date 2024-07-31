@@ -13,6 +13,7 @@ public class Builder : Agent {
     // Start is called before the first frame update
     public void Awake() {
         machine = new StateMachine(this);
+        buildHouse.first = true;
         machine.Set(buildHouse, true);
         ready = true;
     }
@@ -22,6 +23,8 @@ public class Builder : Agent {
         // lifespan--;
         machine.Tick();
         if (state.complete) {
+            buildHouse.first = false;
+
             machine.Set(buildHouse, true);
         }
 

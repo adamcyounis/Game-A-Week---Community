@@ -93,6 +93,7 @@ public class House : MonoBehaviour {
     }
 
     public void Draw() {
+        /*
         for (int i = 0; i < 16; i++) {
             //get the point on the circle
 
@@ -101,5 +102,6 @@ public class House : MonoBehaviour {
             Vector2Int point = new Vector2Int((int)x, (int)y);
             Gizmos.DrawSphere(MapGen.instance.MapToWorld(point), 0.02f);
         }
+        */
     }
 }

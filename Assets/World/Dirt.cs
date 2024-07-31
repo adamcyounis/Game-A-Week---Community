@@ -32,7 +32,7 @@ public class Dirt : Tile {
         }
 
         if (foundation) {
-            nextHealth = 0;
+            nextHealth--;
         } else {
             UpdateHealthByEnvirons();
         }
@@ -94,10 +94,15 @@ public class Dirt : Tile {
         float healthStepped = Mathf.Floor(health * 3) / 3;
         float healthColour = Map(healthStepped, 0, maxHealth, 0.15f, 0.45f);
 
-        Color grassColour = new Color(0.15f, healthColour, 0);
+        Color grassColour = new Color(0.2f, healthColour, 0);
         Color seedColour = new Color(0, 1, 0);
+        Color foundationColour = new Color(0.2f, 0.2f, 0.2f);
         //brown
-        return immunity > 0 ? seedColour : grassColour;
+        Color myCol = immunity > 0 ? seedColour : grassColour;
+        if (foundation) {
+            myCol = foundationColour;
+        }
+        return myCol;
     }
 
     float Map(float value, float start1, float stop1, float start2, float stop2) {

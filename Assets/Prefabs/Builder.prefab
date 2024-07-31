@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3058511034278606974}
   - component: {fileID: 9144356103167563350}
-  - component: {fileID: 7558913430140480885}
   - component: {fileID: 6633795255817186610}
+  - component: {fileID: 5207950036284636277}
   m_Layer: 0
   m_Name: Build House
   m_TagString: Untagged
@@ -51,26 +51,11 @@ MonoBehaviour:
   initPos: {x: 0, y: 0}
   housePrefab: {fileID: 5875513747387877785, guid: 5e847f40a91abf148b5cabf915e6f9ef,
     type: 3}
-  gatherWood: {fileID: 7558913430140480885}
+  gatherWood: {fileID: 5207950036284636277}
   gatherStone: {fileID: 6633795255817186610}
   navigate: {fileID: 4269360243492603104}
   house: {fileID: 0}
---- !u!114 &7558913430140480885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2756148006822366472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e83cca81aa50bb34e92bcea43b3e5592, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  complete: 0
-  startTime: 0
-  initPos: {x: 0, y: 0}
-  navigate: {fileID: 4269360243492603104}
+  first: 0
 --- !u!114 &6633795255817186610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +66,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ea4a61a31ef065449cb5b85b9ca302f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  complete: 0
+  startTime: 0
+  initPos: {x: 0, y: 0}
+  navigate: {fileID: 4269360243492603104}
+--- !u!114 &5207950036284636277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2756148006822366472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0d213da62777f43bc430b3bdbb585b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   complete: 0
